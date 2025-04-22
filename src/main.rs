@@ -8,6 +8,7 @@ mod gui;
 mod keys;
 mod tray;
 mod version;
+mod wnd_track;
 
 #[tokio::main]
 async fn main() {

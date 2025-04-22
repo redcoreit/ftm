@@ -3,11 +3,14 @@
 
 use inputbot::KeybdKey::{self, *};
 use json::JsonValue;
+use lazy_static::lazy_static;
 use regex::Regex;
 use std::collections::HashMap;
-use lazy_static::lazy_static;
 
-use crate::config;
+use crate::{
+	config,
+	wnd_track::{self},
+};
 
 lazy_static! {
 	static ref KEY_MAP: HashMap<&'static str, KeybdKey> = [
@@ -72,7 +75,7 @@ lazy_static! {
 		("9", Numrow9Key),
 		("0", Numrow0Key),
 	]
-	.iter() 
+	.iter()
 	.cloned()
 	.collect();
 }
@@ -113,17 +116,17 @@ pub fn bind_shortcuts() {
 fn switch_to_desktop(desktop: u32, tries: u8) {
 	if tries <= 10 {
 		match winvd::switch_desktop(desktop) {
-				Ok(_) => {}
-				Err(_) => {
-					match winvd::create_desktop() {
-						Ok(_) => {
-							switch_to_desktop(desktop, tries + 1);
-						}
-						Err(e) => {
-							println!("Error: {:?}", e);
-					}
-				}
+			Ok(_) => {
+				wnd_track::wnd_tracker().activate(desktop);
 			}
+			Err(_) => match winvd::create_desktop() {
+				Ok(_) => {
+					switch_to_desktop(desktop, tries + 1);
+				}
+				Err(e) => {
+					println!("Error: {:?}", e);
+				}
+			},
 		}
 	}
 }

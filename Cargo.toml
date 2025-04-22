@@ -25,6 +25,11 @@ json = "0.12.4"
 open = "5.0.0"
 inputbot = "0.6.0"
 lazy_static = "1.4.0"
+winapi = { version = "0.3.9", features = ["winuser"], optional=true}
 
 [build-dependencies]
 embed-resource = "2.4.0"
+
+[features]
+default = ["wnd_track"]
+wnd_track = ["winapi"]

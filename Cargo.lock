@@ -59,6 +59,7 @@ dependencies = [
  "regex",
  "tokio",
  "tray-item",
+ "winapi",
  "winsafe",
  "winvd",
 ]
