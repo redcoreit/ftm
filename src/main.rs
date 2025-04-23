@@ -14,14 +14,15 @@ use windows::Win32::System::Console::{AllocConsole, FreeConsole};
 
 #[tokio::main]
 async fn main() {
-	// Establish this app as foreground capable application so it can use SetForegroundWindow
-	// Create gui console and immediately close it
-	unsafe {
-		let _ = AllocConsole();
-		let _ = FreeConsole();
-	}
+    
+    // Establish this app as foreground capable application so it can use SetForegroundWindow
+    // Create gui console and immediately close it
+    unsafe {
+        let _ = AllocConsole();
+        let _ = FreeConsole();
+    }
 
-	logging::init();
-	tokio::spawn(keys::init());
-	tray::init();
+    logging::init();
+    tokio::spawn(keys::init());
+    tray::init();
 }
