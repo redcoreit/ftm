@@ -4,14 +4,21 @@
 use inputbot::KeybdKey::{self, *};
 use json::JsonValue;
 use regex::Regex;
-use std::collections::HashMap;
+use std::{collections::HashMap, fs::File, io::Write, path::PathBuf};
 use lazy_static::lazy_static;
 
+use windows::{core::PWSTR, Win32::{
+        Foundation::*, System::Threading::{QueryFullProcessImageNameW, PROCESS_NAME_FORMAT}, UI::{Controls::STATE_SYSTEM_INVISIBLE, WindowsAndMessaging::*}
+    }};
+
 use windows::{
+    core::PCWSTR,
     Win32::{
-        Foundation::*,
-        UI::WindowsAndMessaging::*,
-        UI::Controls::STATE_SYSTEM_INVISIBLE,
+        Foundation::{CloseHandle, HWND},
+        System::{
+            Threading::{OpenProcess, PROCESS_QUERY_LIMITED_INFORMATION},
+        },
+        UI::WindowsAndMessaging::GetWindowThreadProcessId,
     },
 };
 
@@ -121,7 +128,23 @@ pub fn bind_shortcuts() {
 	}
 }
 
+fn write_log(text: &str) {
+    let file = std::fs::OpenOptions::new()
+        .append(true)
+        .create(true)
+        .write(true)
+        .open("log.txt");
+
+    if file.is_err() {
+        return;
+    }
+
+    let mut file = file.unwrap();
+    _ = file.write_all(text.as_bytes());
+}
+
 unsafe extern "system" fn enum_windows_and_switch_app_focus(hwnd: HWND, _lparam: LPARAM) -> BOOL {
+
     // remove not visible windows
     if IsWindowVisible(hwnd) == false {
         return BOOL(1);
@@ -135,7 +158,27 @@ unsafe extern "system" fn enum_windows_and_switch_app_focus(hwnd: HWND, _lparam:
     };
     let _ = GetTitleBarInfo(hwnd, &mut ti);
     if ti.rgstate[0] & STATE_SYSTEM_INVISIBLE.0 > 0 {
-        return BOOL(1);
+        let exe_path = get_process_name_from_hwnd(hwnd);
+
+        if exe_path.is_none() {
+            return BOOL(1);
+        }
+
+        let file = PathBuf::from(exe_path.unwrap());
+
+        if !file.is_file()
+        {
+            return BOOL(1);
+        }
+
+        let file = file.file_name().unwrap().to_str().unwrap();
+
+        write_log(&file);
+        write_log(&"\n");
+
+        if !file.eq_ignore_ascii_case("WindowsTerminal.exe") {
+            return BOOL(1);
+        }
     }
 
     // remove "floating toolbar" windows that are not visible in alt+tab
@@ -185,6 +228,10 @@ fn switch_to_desktop(desktop: u32, tries: u8) {
 	}
 }
 
+fn println<T: std::fmt::Debug>(x: T) {
+    println!("{:?}", x);
+}
+
 fn process_shortcut(config: &JsonValue, desktop: u32) -> Vec<KeybdKey> {
 	let desktop_str = format!("desktop_{}", desktop + 1);
 	let shortcut_sanitized =
@@ -218,4 +265,41 @@ fn build_keyboard_shortcut(input: &str) -> Vec<KeybdKey> {
 		.filter_map(|part| KEY_MAP.get(&part))
 		.cloned()
 		.collect()
+}
+
+fn get_process_name_from_hwnd(hwnd: HWND) -> Option<String> {
+    let mut pid = 0;
+    unsafe {
+        GetWindowThreadProcessId(hwnd, Some(&mut pid));
+        if pid == 0 {
+            return None;
+        }
+
+        let h_process = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION, false, pid);
+        if h_process.is_err() {
+            return None;
+        }
+
+        let h_process = h_process.unwrap();
+
+        let mut buf = vec![0u16; 260];
+        let mut size = buf.len() as u32;
+
+        let success = QueryFullProcessImageNameW(
+            h_process,
+            PROCESS_NAME_FORMAT(0),
+            PWSTR::from_raw(buf.as_mut_ptr()),
+            &mut size,
+        )
+        .is_ok();
+
+        _ = CloseHandle(h_process);
+
+        if success {
+            buf.truncate(size as usize);
+            let path = OsString::from_wide(&buf);
+            return path.to_str().map(|s| s.to_string());
+        }
+    }
+    None
 }
