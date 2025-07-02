@@ -1,3 +1,6 @@
+/* SPDX-FileCopyrightText: © 2025 Roland Halbaksz
+ * SPDX-License-Identifier: MIT */
+
 use std::{fs::OpenOptions, os::windows::io::AsRawHandle};
 
 use log::LevelFilter;

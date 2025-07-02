@@ -1,4 +1,5 @@
 /* SPDX-FileCopyrightText: © 2023 Nadim Kobeissi <nadim@symbolic.software>
+ * SPDX-FileCopyrightText: © 2025 Roland Halbaksz
  * SPDX-License-Identifier: MIT */
 
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
