@@ -3,7 +3,11 @@
 
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
-mod binkybox;
+mod config;
+mod gui;
+mod keys;
+mod tray;
+mod version;
 
 use windows::Win32::System::Console::{
     AllocConsole, FreeConsole
@@ -18,6 +22,6 @@ async fn main() {
         let _ = FreeConsole();
     }
 
-	tokio::spawn(binkybox::init_keys());
-	binkybox::init_tray();
+	tokio::spawn(keys::init());
+	tray::init();
 }

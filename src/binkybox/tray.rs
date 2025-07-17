@@ -5,7 +5,7 @@ use std::sync::mpsc;
 use tray_item::{IconSource, TrayItem};
 use winvd::DesktopEvent;
 
-use crate::gui;
+use super::gui;
 pub enum TrayMessage {
 	Settings,
 	Quit,

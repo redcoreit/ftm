@@ -4,9 +4,9 @@
 use json::object;
 use winsafe::{self as w, co, gui, prelude::*};
 
-use crate::config;
-use crate::keys;
-use crate::version;
+use super::config;
+use super::keys;
+use super::version;
 
 #[allow(dead_code)]
 #[derive(Clone)]

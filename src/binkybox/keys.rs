@@ -18,7 +18,7 @@ use windows::{
 use std::ffi::OsString;
 use std::os::windows::ffi::OsStringExt;
 
-use crate::config;
+use super::config;
 
 lazy_static! {
 	static ref KEY_MAP: HashMap<&'static str, KeybdKey> = [
