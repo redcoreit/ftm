@@ -4,19 +4,15 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod binkybox;
-
-use windows::Win32::System::Console::{
-    AllocConsole, FreeConsole
-};
+mod win32;
 
 #[tokio::main]
 async fn main() {
-    // Establish this app as foreground capable application so it can use SetForegroundWindow
-    // Create gui console and immediately close it
-    unsafe {
-        let _ = AllocConsole();
-        let _ = FreeConsole();
-    }
+    win32::console::init();
+
+    println!("Stdout test");
+    eprintln!("Stderr test");
+    // panic!("Panic test");
 
 	tokio::spawn(binkybox::init_keys());
 	binkybox::init_tray();
