@@ -1,5 +1,7 @@
-hard_tabs = true
+hard_tabs = false
+tab_spaces = 4
 reorder_imports = true
 newline_style = "Unix"
-max_width= 90
+max_width= 110
 edition = "2021"
+use_small_heuristics = "Max"                                                                                 
