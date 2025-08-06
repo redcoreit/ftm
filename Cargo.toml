@@ -1,8 +1,8 @@
 [package]
-name = "binkybox"
+name = "ftm"
 version = "0.2.2"
 edition = "2021"
-authors = ["Nadim Kobeissi <nadim@symbolic.software>"]
+authors = ["Roland Halbaksz"]
 publish = false
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

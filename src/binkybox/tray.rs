@@ -12,7 +12,7 @@ pub enum TrayMessage {
 }
 
 pub fn init() {
-	let mut tray = TrayItem::new("BinkyBox", IconSource::Resource("icon")).unwrap();
+	let mut tray = TrayItem::new("ftm", IconSource::Resource("icon")).unwrap();
 	let (tx, rx) = mpsc::sync_channel(1);
 	let tx_0 = tx.to_owned();
 	tray.add_menu_item("Settings", move || {

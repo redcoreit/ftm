@@ -10,4 +10,4 @@ num_8 ICON "icons/num_8.ico"
 num_9 ICON "icons/num_9.ico"
 
 #define RT_MANIFEST 24
-1 RT_MANIFEST "binkybox.exe.manifest"
+1 RT_MANIFEST "ftm.exe.manifest"
