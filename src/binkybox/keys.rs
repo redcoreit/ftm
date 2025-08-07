@@ -135,7 +135,9 @@ unsafe extern "system" fn enum_windows_and_switch_app_focus(hwnd: HWND, _lparam:
     };
     let _ = GetTitleBarInfo(hwnd, &mut ti);
     if ti.rgstate[0] & STATE_SYSTEM_INVISIBLE.0 > 0 {
-        return BOOL(1);
+        if !crate::ftm::keys_stubs::is_whitelist_fs_app(hwnd) {
+            return BOOL(1);
+        }
     }
 
     // remove "floating toolbar" windows that are not visible in alt+tab

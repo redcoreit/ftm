@@ -1,0 +1,30 @@
+Stdout test
+Stderr test
+Listener thread started ThreadId(12)
+Retry the function after ComNotInitialized
+Registered notification 0x22fa6b7b088 20 ThreadId(12)
+Stdout test
+Stderr test
+Listener thread started ThreadId(12)
+Retry the function after ComNotInitialized
+Registered notification 0x215329b33e8 21 ThreadId(12)
+Stdout test
+Stderr test
+Listener thread started ThreadId(12)
+Retry the function after ComNotInitialized
+Registered notification 0x214e83c8088 22 ThreadId(12)
+Stdout test
+Stderr test
+Listener thread started ThreadId(12)
+Retry the function after ComNotInitialized
+Registered notification 0x1350cc43d28 23 ThreadId(12)
+Stdout test
+Stderr test
+Listener thread started ThreadId(12)
+Retry the function after ComNotInitialized
+Registered notification 0x204a5dff4f8 24 ThreadId(12)
+Stdout test
+Stderr test
+Listener thread started ThreadId(12)
+Retry the function after ComNotInitialized
+Registered notification 0x22b19c3e678 25 ThreadId(12)

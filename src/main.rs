@@ -5,6 +5,7 @@
 
 mod binkybox;
 mod win32;
+mod ftm;
 
 #[tokio::main]
 async fn main() {
